@@ -17,7 +17,10 @@ class App extends React.Component {
             videos : [],
             selected : null
         };
-        YTSearch({ key: API_KEY, term: 'jain' }, videos => {
+        this.searchVideos("jain");
+    }
+    searchVideos(term){
+        YTSearch({ key: API_KEY, term: term }, videos => {
             this.setState({ 
                 videos:videos,
                 selected:videos[0]
@@ -27,10 +30,13 @@ class App extends React.Component {
     handleVideoSelect(selected){
         this.setState({selected});
     }
+    handleInputChange(term){
+        this.searchVideos(term);
+    }
     render() {
         return (
             <div>
-                <SearchBar />
+                <SearchBar onInputChange={this.handleInputChange.bind(this)} />
                 {this.state.selected && <VideoDetail video={this.state.selected}/>}
                 <VideoList onVideoSelect={this.handleVideoSelect.bind(this)} videos={this.state.videos}/>
             </div>
